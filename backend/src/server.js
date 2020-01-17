@@ -23,4 +23,4 @@ app.use(cors());
 app.use(express.json())
 app.use(routes)
 
-app.listen(3333)
+server.listen(3333)
