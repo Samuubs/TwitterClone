@@ -1,11 +1,14 @@
-const express = require('express');
+const express = require('express')
+const mongoose = require('mongoose')
+const routes = require('./routes')
 
-const app = express();
+const app = express()
 
-app.get('/', (req, res) => {
-    return res.send('Hello World')
+mongoose.connect('mongodb://samu:45967812sam@ds263928.mlab.com:63928/twitter_clone', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
+app.use(express.json())
+app.use(routes)
 
-app.listen(3333, () => {
-    console.log('Conectado na porta 3333')
-});
+app.listen(3333)
