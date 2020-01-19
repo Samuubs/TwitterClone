@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import socketio from 'socket.io-client';
 
 import './Timeline.css';
 
@@ -13,11 +14,21 @@ export default function Timeline() {
 
   useEffect(() => {
     async function loadTweets() {
+      const io = socketio('http://localhost:3333');
+      io.on('tweet', data => {
+        setTweets([...tweets, data]);
+      })
+  
+      io.on('like', data => {
+        setTweets(tweets.map(tweet => 
+          tweet._id === data._id ? data : tweet
+        ))
+      })
       const response = await api.get('/tweets');
       setTweets(response.data)
     }
     loadTweets();
-  }, [])
+  }, [tweets])
 
   async function handleNewTweet(event) {
     if (event.keyCode !== 13) return;
